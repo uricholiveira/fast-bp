@@ -127,3 +127,16 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Poetry dependencies
+poetry.lock
+
+# IDEs
+.vscode/
+.idea/
+
+# Ignore dynaconf secret files
+.secrets.*
+
+# Ignore .db files
+*.db
