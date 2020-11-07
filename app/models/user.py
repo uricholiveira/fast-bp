@@ -6,7 +6,6 @@ from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from app.ext.db import Base
 
-
 crypt = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
@@ -41,4 +40,3 @@ class User(Base):
 	def check_password(self, value):
 		if crypt.verify(value, self.password):
 			return True
-
