@@ -9,8 +9,14 @@ from app.ext.db import Base
 crypt = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
+class UserWorkspace(Base):
+	__tablename__ = "user_workspace"
+	user_id = Column(Integer, ForeignKey("user.id"), primary_key=True)
+	workspace_id = Column(Integer, ForeignKey('workspace.id'), primary_key=True)
+
+
 class User(Base):
-	__tablename__ = "users"
+	__tablename__ = "user"
 
 	id = Column(Integer, primary_key=True, autoincrement=True, index=True)
 	name = Column(String, nullable=False)
@@ -20,6 +26,8 @@ class User(Base):
 	updated_at = Column(DateTime, nullable=True, default=None, onupdate=datetime.utcnow())
 	is_active = Column(Boolean, nullable=False, default=True)
 	is_admin = Column(Boolean, nullable=False, default=False)
+
+	workspaces = relationship("Workspace", secondary=UserWorkspace.__tablename__, back_populates="users")
 
 	@property
 	def password(self):
