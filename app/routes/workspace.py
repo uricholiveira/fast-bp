@@ -40,3 +40,13 @@ def patch_workspace(db: Session = Depends(get_db), workspace_id: int = None, wor
 @router.delete('/{workspace_id}', dependencies=[Depends(oauth2_scheme)])
 def delete_workspace(db: Session = Depends(get_db), workspace_id: int = None):
 	return service.delete_workspace(db, workspace_id)
+
+
+@router.post('/{workspace_id}/user/{user_id}', tags=['User_Workspace'])
+def add_user_to_workspace(db: Session = Depends(get_db), workspace_id: int = None, user_id: int = None):
+	return service.add_user_to_workspace(db, workspace_id, user_id)
+
+
+@router.delete('/{workspace_id}/user/{user_id}', tags=['User_Workspace'], dependencies=[Depends(oauth2_scheme)])
+def del_user_from_workspace(db: Session = Depends(get_db), workspace_id: int = None, user_id: int = None):
+	return service.del_user_from_workspace(db, workspace_id, user_id)
