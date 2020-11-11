@@ -5,6 +5,7 @@ from pydantic import BaseModel, validator
 from typing import Optional, List
 
 from app.schemas.user import UserOut
+from app.schemas.environment import EnvironmentOut
 
 
 class WorkspaceBase(BaseModel):
@@ -21,3 +22,5 @@ class WorkspaceOut(WorkspaceBase):
 
 	class Config:
 		orm_mode = True
+
+

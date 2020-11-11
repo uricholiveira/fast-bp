@@ -15,6 +15,14 @@ class UserWorkspace(Base):
 	workspace_id = Column(Integer, ForeignKey('workspace.id'), primary_key=True)
 
 
+class EnvironmentUserWorkspace(Base):
+	__tablename__ = 'user_workspace_environment'
+
+	user_id = Column(Integer, ForeignKey("user.id"), primary_key=True)
+	environment_id = Column(Integer, ForeignKey('environment.id'), primary_key=True)
+	role = Column(String, nullable=True, default='Guest')
+
+
 class User(Base):
 	__tablename__ = "user"
 
@@ -28,6 +36,7 @@ class User(Base):
 	is_admin = Column(Boolean, nullable=False, default=False)
 
 	workspaces = relationship("Workspace", secondary=UserWorkspace.__tablename__, back_populates="users")
+	environments = relationship("Environment", secondary=EnvironmentUserWorkspace.__tablename__, back_populates="users")
 
 	@property
 	def password(self):

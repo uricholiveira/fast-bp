@@ -53,7 +53,7 @@ def patch_workspace(db: Session, workspace_id: int, workspace: schema.WorkspaceI
 	return new_workspace
 
 
-def delete_workspace(db: Session, workspace_id: int) -> JSONResponse:
+def delete_workspace(db: Session, workspace_id: int) -> Union[JSONResponse, HTTPException]:
 	workspace = get_workspace_by_id(db, workspace_id)
 	db.delete(workspace)
 	db.commit()
@@ -63,8 +63,9 @@ def delete_workspace(db: Session, workspace_id: int) -> JSONResponse:
 def add_user_to_workspace(db: Session, workspace_id: int, user_id: int) -> Union[HTTPException, JSONResponse]:
 	user = user_service.get_user_by_id(db, user_id)
 	workspace = get_workspace_by_id(db, workspace_id)
-	is_invalid = db.query(model.UserWorkspace).filter(model.UserWorkspace.user_id == user.id,
-	                                                  model.UserWorkspace.workspace_id == workspace.id).first()
+	is_invalid = db.query(model.UserWorkspace).filter(
+		model.UserWorkspace.user_id == user.id,
+		model.UserWorkspace.workspace_id == workspace.id).first()
 	if is_invalid:
 		raise HTTPException(status_code=409, detail="User already in this workspace")
 	user_workspace = model.UserWorkspace(user_id=user.id, workspace_id=workspace.id)
@@ -77,8 +78,9 @@ def add_user_to_workspace(db: Session, workspace_id: int, user_id: int) -> Union
 def del_user_from_workspace(db: Session, workspace_id: int, user_id: int) -> Union[HTTPException, JSONResponse]:
 	user = user_service.get_user_by_id(db, user_id)
 	workspace = get_workspace_by_id(db, workspace_id)
-	user_workspace = db.query(model.UserWorkspace).filter(model.UserWorkspace.user_id == user.id,
-	                                                      model.UserWorkspace.workspace_id == workspace.id).first()
+	user_workspace = db.query(model.UserWorkspace).filter(
+		model.UserWorkspace.user_id == user.id,
+		model.UserWorkspace.workspace_id == workspace.id).first()
 	if not user_workspace:
 		raise HTTPException(status_code=404, detail="User not found in this workspace")
 	db.delete(user_workspace)

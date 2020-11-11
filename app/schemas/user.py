@@ -1,8 +1,9 @@
+from __future__ import annotations
 import arrow
 from datetime import datetime
 from dynaconf import settings
 from pydantic import BaseModel, validator
-from typing import Optional
+from typing import Optional, List
 
 
 class UserBase(BaseModel):
@@ -22,6 +23,11 @@ class UserPatch(BaseModel):
 
 class UserRegister(UserIn):
 	password: str
+
+
+class WorkspaceOut(BaseModel):
+	name: str
+	is_active: str
 
 
 class UserOut(UserIn):
